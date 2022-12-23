@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
+    <title>관리하기</title>
+    <style>
+        .container {
+            max-width: 560px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>관리하기</h2>
+    </div>
+
+    <button class="w-50 btn btn-primary btn-lg" onclick="location.href='/admin/userPassword'">출석 비밀번호 변경</button>
+    <br/><br/>
+    <button class="w-50 btn btn-primary btn-lg" onclick="location.href='/admin/adminPassword'">관리자 비밀번호 변경</button>
+    <br/><br/>
+    <button class="w-50 btn btn-warning btn-lg" onclick="location.href='/admin/logout'">로그아웃</button>
+
+</div> <!-- /container -->
+</body>
+</html>

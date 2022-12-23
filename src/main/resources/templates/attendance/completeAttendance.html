@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
+    <title>출석성공</title>
+    <style>
+        .container {
+            max-width: 560px;
+        }
+
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center" th:object="${attendance}">
+        <h2>출석이 완료되었습니다.</h2>
+        <span th:text="|출석일: *{attendanceNumber}|"></span>
+        <span th:text="|결석일: *{absenceNumber}|"></span>
+    </div>
+</div>
+</body>
+</html>
