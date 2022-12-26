@@ -2,12 +2,12 @@ package com.sungam1004.register.service;
 
 import com.sungam1004.register.Exception.CustomException;
 import com.sungam1004.register.Exception.ErrorCode;
-import com.sungam1004.register.utill.ExcelManager;
-import com.sungam1004.register.utill.PasswordManager;
 import com.sungam1004.register.domain.Attendance;
 import com.sungam1004.register.dto.StatisticsDto;
 import com.sungam1004.register.repository.AttendanceRepository;
 import com.sungam1004.register.repository.UserRepository;
+import com.sungam1004.register.utill.ExcelManager;
+import com.sungam1004.register.utill.PasswordManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +25,7 @@ public class AdminService {
     private final PasswordManager passwordManager;
     private final UserRepository userRepository;
     private final AttendanceRepository attendanceRepository;
+    private final ExcelManager excelManager;
 
     public void loginAdmin(String password) {
         if (!passwordManager.isCorrectAdminPassword(password)) {
@@ -40,7 +41,7 @@ public class AdminService {
         passwordManager.changeAdminPassword(password);
     }
 
-    public void statistics() {
+    public String statistics() {
         StatisticsDto statistics = new StatisticsDto();
         statistics.setName(userRepository.findAll());
 
@@ -49,25 +50,25 @@ public class AdminService {
             statistics.addAttendance(attendance.getUser().getName(), attendance.getCreatedAt());
         }
 
-        List<List<LocalDateTime>> statisticsAttendances = statistics.getAttendance();
-        List<String> names = statistics.getNames();
-
         /**
          * Debug
          */
-        for (int i = 0; i < names.size(); i++) {
-            System.out.print(names.get(i) + " : ");
+        {
+            List<List<LocalDateTime>> statisticsAttendances = statistics.getAttendance();
+            List<String> names = statistics.getNames();
+            for (int i = 0; i < names.size(); i++) {
+                System.out.print(names.get(i) + " : ");
 
-            for (List<LocalDateTime> at : statisticsAttendances) {
+                for (List<LocalDateTime> at : statisticsAttendances) {
 
-                for (LocalDateTime time : at) {
-                    if (time != null) System.out.print("O ");
-                    else System.out.print("X ");
+                    for (LocalDateTime time : at) {
+                        if (time != null) System.out.print("O ");
+                        else System.out.print("X ");
+                    }
                 }
+                System.out.println();
             }
-            System.out.println();
         }
-        ExcelManager excelManager = new ExcelManager();
-        excelManager.createExcelFile(names, statisticsAttendances);
+        return excelManager.createExcelFile(statistics);
     }
 }

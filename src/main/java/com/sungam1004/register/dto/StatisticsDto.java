@@ -97,4 +97,5 @@ public class StatisticsDto {
     public List<String> getNames() {
         return names;
     }
+
 }
