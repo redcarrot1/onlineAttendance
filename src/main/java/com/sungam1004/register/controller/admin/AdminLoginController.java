@@ -1,10 +1,8 @@
-package com.sungam1004.register.controller;
+package com.sungam1004.register.controller.admin;
 
 import com.sungam1004.register.Exception.CustomException;
 import com.sungam1004.register.Exception.ErrorCode;
-import com.sungam1004.register.dto.AdminPasswordDto;
 import com.sungam1004.register.dto.LoginAdminDto;
-import com.sungam1004.register.dto.UserPasswordDto;
 import com.sungam1004.register.service.AdminService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -23,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("admin")
 @Slf4j
-public class AdminController {
+public class AdminLoginController {
 
     private final AdminService adminService;
 
@@ -65,52 +63,5 @@ public class AdminController {
         }
         return "redirect:/admin/login";
     }
-
-    @GetMapping("/userPassword")
-    public String changeUserPasswordForm(Model model) {
-        model.addAttribute("userPasswordDto", new UserPasswordDto.Request());
-        return "admin/changeUserPassword";
-    }
-
-    @PostMapping("/userPassword")
-    public String changeUserPassword(@Valid @ModelAttribute("userPasswordDto") UserPasswordDto.Request requestDto,
-                                     BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "admin/changeUserPassword";
-        }
-        try {
-            adminService.changeUserPassword(requestDto.getPassword());
-        } catch (CustomException e) {
-            if (e.getError() == ErrorCode.NOT_FORMAT_MATCH_USER_PASSWORD) {
-                bindingResult.rejectValue("password", "0", e.getMessage());
-            }
-            return "admin/changeUserPassword";
-        }
-        return "admin/completeChangePassword";
-    }
-
-    @GetMapping("/adminPassword")
-    public String changeAdminPasswordForm(Model model) {
-        model.addAttribute("adminPasswordDto", new AdminPasswordDto.Request());
-        return "admin/changeAdminPassword";
-    }
-
-    @PostMapping("/adminPassword")
-    public String changeAdminPassword(@Valid @ModelAttribute("adminPasswordDto") AdminPasswordDto.Request requestDto,
-                                      BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "admin/changeAdminPassword";
-        }
-        try {
-            adminService.changeAdminPassword(requestDto.getPassword());
-        } catch (CustomException e) {
-            if (e.getError() == ErrorCode.NOT_FORMAT_MATCH_USER_PASSWORD) {
-                bindingResult.rejectValue("password", "0", e.getMessage());
-            }
-            return "admin/changeAdminPassword";
-        }
-        return "admin/completeChangePassword";
-    }
-
 }
 

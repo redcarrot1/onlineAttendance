@@ -2,11 +2,19 @@ package com.sungam1004.register.service;
 
 import com.sungam1004.register.Exception.CustomException;
 import com.sungam1004.register.Exception.ErrorCode;
-import com.sungam1004.register.config.PasswordManager;
+import com.sungam1004.register.utill.ExcelManager;
+import com.sungam1004.register.utill.PasswordManager;
+import com.sungam1004.register.domain.Attendance;
+import com.sungam1004.register.dto.StatisticsDto;
+import com.sungam1004.register.repository.AttendanceRepository;
+import com.sungam1004.register.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -15,6 +23,8 @@ import org.springframework.stereotype.Service;
 public class AdminService {
 
     private final PasswordManager passwordManager;
+    private final UserRepository userRepository;
+    private final AttendanceRepository attendanceRepository;
 
     public void loginAdmin(String password) {
         if (!passwordManager.isCorrectAdminPassword(password)) {
@@ -28,5 +38,36 @@ public class AdminService {
 
     public void changeAdminPassword(String password) throws CustomException {
         passwordManager.changeAdminPassword(password);
+    }
+
+    public void statistics() {
+        StatisticsDto statistics = new StatisticsDto();
+        statistics.setName(userRepository.findAll());
+
+        List<Attendance> attendances = attendanceRepository.findAll();
+        for (Attendance attendance : attendances) {
+            statistics.addAttendance(attendance.getUser().getName(), attendance.getCreatedAt());
+        }
+
+        List<List<LocalDateTime>> statisticsAttendances = statistics.getAttendance();
+        List<String> names = statistics.getNames();
+
+        /**
+         * Debug
+         */
+        for (int i = 0; i < names.size(); i++) {
+            System.out.print(names.get(i) + " : ");
+
+            for (List<LocalDateTime> at : statisticsAttendances) {
+
+                for (LocalDateTime time : at) {
+                    if (time != null) System.out.print("O ");
+                    else System.out.print("X ");
+                }
+            }
+            System.out.println();
+        }
+        ExcelManager excelManager = new ExcelManager();
+        excelManager.createExcelFile(names, statisticsAttendances);
     }
 }

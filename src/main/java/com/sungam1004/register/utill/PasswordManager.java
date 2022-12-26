@@ -1,4 +1,4 @@
-package com.sungam1004.register.config;
+package com.sungam1004.register.utill;
 
 import com.sungam1004.register.Exception.CustomException;
 import com.sungam1004.register.Exception.ErrorCode;
@@ -20,10 +20,6 @@ public class PasswordManager {
         else throw new CustomException(ErrorCode.NOT_FORMAT_MATCH_USER_PASSWORD);
     }
 
-    public String getUserPassword() {
-        return userPassword;
-    }
-
     public Boolean isCorrectUserPassword(String nPassword) {
         return Objects.equals(userPassword, nPassword);
     }
@@ -33,10 +29,6 @@ public class PasswordManager {
             adminPassword = nPassword;
         }
         else throw new CustomException(ErrorCode.NOT_FORMAT_MATCH_ADMIN_PASSWORD);
-    }
-
-    public String getAdminPassword() {
-        return adminPassword;
     }
 
     public Boolean isCorrectAdminPassword(String nPassword) {
