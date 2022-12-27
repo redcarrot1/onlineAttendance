@@ -22,9 +22,9 @@
     </div>
 
     <form th:action="@{/admin/login}" method="post" th:object="${LoginAdminDto}">
-        <div>
-            <label for="password">비밀번호</label>
-            <input type="password" minlength="5" maxlength="20" id="password" th:field="*{password}"
+            <div>
+                <label for="password">비밀번호</label>
+                <input type="password" minlength="5" maxlength="20" id="password" th:field="*{password}"
                    th:errorclass="field-error" class="form-control"
                    placeholder="비밀번호를 입력하세요.[5자리 이상, 20자리 이하]">
             <div class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">

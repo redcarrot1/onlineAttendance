@@ -3,7 +3,10 @@ package com.sungam1004.register.service;
 import com.sungam1004.register.Exception.CustomException;
 import com.sungam1004.register.Exception.ErrorCode;
 import com.sungam1004.register.domain.Attendance;
+import com.sungam1004.register.domain.User;
+import com.sungam1004.register.dto.AddUserDto;
 import com.sungam1004.register.dto.StatisticsDto;
+import com.sungam1004.register.dto.UserManagerDto;
 import com.sungam1004.register.repository.AttendanceRepository;
 import com.sungam1004.register.repository.UserRepository;
 import com.sungam1004.register.utill.ExcelManager;
@@ -70,5 +73,18 @@ public class AdminService {
             }
         }
         return excelManager.createExcelFile(statistics);
+    }
+
+    public void addUser(AddUserDto.Request requestDto) {
+        if (userRepository.existsByName(requestDto.getName()))
+            throw new CustomException(ErrorCode.DUPLICATE_USER_NAME);
+        User user = requestDto.toEntity();
+        userRepository.save(user);
+    }
+
+    public List<UserManagerDto> findUserAll() {
+        return userRepository.findAll().stream()
+                .map(UserManagerDto::of)
+                .toList();
     }
 }
