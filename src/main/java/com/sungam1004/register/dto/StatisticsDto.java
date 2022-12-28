@@ -68,18 +68,18 @@ public class StatisticsDto {
     private List<List<LocalDateTime>> attendance = new ArrayList<>();
 
     public void setName(List<User> users) {
-        List<LocalDateTime> dd = new ArrayList<>();
-        for (int i = 0; i < date.size(); i++) dd.add(null);
-
         for (User user : users) {
             names.add(user.getName());
             mapNameIndex.put(user.getName(), user.getId());
+
+            List<LocalDateTime> dd = new ArrayList<>();
+            for (int i = 0; i < date.size(); i++) dd.add(null);
             attendance.add(dd);
         }
     }
 
     public void addAttendance(String name, LocalDateTime dateTime) {
-        int index = names.size() == 1 ? 0 : mapNameIndex.get(name).intValue();
+        int index = names.size() == 1 ? 0 : mapNameIndex.get(name).intValue() - 1;
         String attendanceDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(dateTime);
 
         for (int i = 0; i < date.size(); i++) {

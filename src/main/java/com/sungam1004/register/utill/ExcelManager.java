@@ -46,7 +46,11 @@ public class ExcelManager {
 
             for (LocalDateTime at : data.get(i)) {
                 cell = row.createCell(cellNum++);
-                if (at != null) cell.setCellValue(at.toString());
+                if (at != null) {
+                    if (at.getHour() == 0 && at.getMinute() == 0 && at.getSecond() == 0)
+                        cell.setCellValue("관리자에 의한 출석");
+                    else cell.setCellValue(at.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                }
             }
         }
 

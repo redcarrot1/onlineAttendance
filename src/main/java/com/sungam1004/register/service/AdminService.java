@@ -65,12 +65,10 @@ public class AdminService {
             for (int i = 0; i < names.size(); i++) {
                 System.out.print(names.get(i) + " : ");
 
-                for (List<LocalDateTime> at : statisticsAttendances) {
+                for (LocalDateTime time : statisticsAttendances.get(i)) {
 
-                    for (LocalDateTime time : at) {
-                        if (time != null) System.out.print("O ");
-                        else System.out.print("X ");
-                    }
+                    if (time != null) System.out.print("O ");
+                    else System.out.print("X ");
                 }
                 System.out.println();
             }
