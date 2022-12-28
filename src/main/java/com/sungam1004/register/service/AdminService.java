@@ -6,6 +6,7 @@ import com.sungam1004.register.domain.Attendance;
 import com.sungam1004.register.domain.User;
 import com.sungam1004.register.dto.AddUserDto;
 import com.sungam1004.register.dto.StatisticsDto;
+import com.sungam1004.register.dto.UserDetailDto;
 import com.sungam1004.register.dto.UserManagerDto;
 import com.sungam1004.register.repository.AttendanceRepository;
 import com.sungam1004.register.repository.UserRepository;
@@ -17,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -86,5 +89,49 @@ public class AdminService {
         return userRepository.findAll().stream()
                 .map(UserManagerDto::of)
                 .toList();
+    }
+
+    public UserDetailDto userDetail(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        StatisticsDto statistics = new StatisticsDto();
+        statistics.setName(List.of(user));
+
+        List<Attendance> attendances = attendanceRepository.findByUser(user);
+        for (Attendance attendance : attendances) {
+            statistics.addAttendance(user.getName(), attendance.getCreatedAt());
+        }
+
+        List<LocalDateTime> localDateTimes = statistics.getAttendance().get(0);
+        List<String> date = StatisticsDto.date;
+        List<UserDetailDto.AttendanceDate> attendanceDates = new ArrayList<>();
+        for (int i = 0; i < localDateTimes.size(); i++) {
+            attendanceDates.add(new UserDetailDto.AttendanceDate(date.get(i), localDateTimes.get(i)));
+        }
+
+        return UserDetailDto.of(user, attendanceDates);
+    }
+
+    public void toggleAttendance(Long userId, String date) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        List<Attendance> attendances = attendanceRepository.findByUser(user);
+
+        for (Attendance attendance : attendances) {
+            String createdAt = attendance.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if (createdAt.equals(date)) {
+                attendanceRepository.delete(attendance);
+                user.decreaseAttendanceNumber();
+                user.increaseAbsenceNumber();
+                return;
+            }
+        }
+        String[] splitDate = date.split("-");
+        LocalDateTime saveDateTime = LocalDateTime.of(Integer.parseInt(splitDate[0]), Integer.parseInt(splitDate[1]),
+                Integer.parseInt(splitDate[2]), 0, 0);
+        attendanceRepository.save(new Attendance(user, saveDateTime));
+        user.decreaseAbsenceNumber();
+        user.increaseAttendanceNumber();
     }
 }

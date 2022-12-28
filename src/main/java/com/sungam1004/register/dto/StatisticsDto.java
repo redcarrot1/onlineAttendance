@@ -79,7 +79,7 @@ public class StatisticsDto {
     }
 
     public void addAttendance(String name, LocalDateTime dateTime) {
-        int index = mapNameIndex.get(name).intValue();
+        int index = names.size() == 1 ? 0 : mapNameIndex.get(name).intValue();
         String attendanceDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(dateTime);
 
         for (int i = 0; i < date.size(); i++) {

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserManagerDto {
+    private Long id;
     private String name;
     private String phone;
     private String birth;
@@ -17,7 +18,7 @@ public class UserManagerDto {
     private String team;
 
     public static UserManagerDto of(User user) {
-        return new UserManagerDto(user.getName(), user.getPhone(), user.getBirth(), user.getAbsenceNumber(),
+        return new UserManagerDto(user.getId(), user.getName(), user.getPhone(), user.getBirth(), user.getAbsenceNumber(),
                 user.getAttendanceNumber(), user.getTeam().toString());
     }
 }
