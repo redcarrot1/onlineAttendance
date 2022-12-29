@@ -72,6 +72,7 @@ public class ExcelManager {
         }
 
         try {
+            if (new File(filePath).mkdir()) log.info("디렉터리가 생성되었습니다.");
             FileOutputStream out = new FileOutputStream(new File(filePath, fileName));
             workbook.write(out);
             out.close();

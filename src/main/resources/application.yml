@@ -16,10 +16,5 @@ spring:
       enabled: true
       path: /h2-console
 
-  sql: # data-h2.sql ? ???? ?? ?????.
-    init:
-      platform: h2
-      mode: always
-
 file:
-  path: /Users/hongseungtaeg/Desktop/toyproject/toyProject7-register/file
+  path: /workspace/file
