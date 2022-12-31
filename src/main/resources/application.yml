@@ -17,4 +17,5 @@ spring:
       path: /h2-console
 
 file:
-  path: /workspace/file
+  #path: /workspace/file
+  path: /Users/hongseungtaeg/Desktop/toyproject/toyProject7-register/file

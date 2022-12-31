@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -49,7 +50,9 @@ public class AdminService {
 
     public String statistics() {
         StatisticsDto statistics = new StatisticsDto();
-        statistics.setName(userRepository.findAll());
+        statistics.setName(userRepository.findAll().stream()
+                .sorted(Comparator.comparing(User::getTeam))
+                .toList());
 
         List<Attendance> attendances = attendanceRepository.findAll();
         for (Attendance attendance : attendances) {
