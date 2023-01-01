@@ -24,9 +24,6 @@ public class ExcelManager {
     public String filePath;
 
     public String createExcelFile(StatisticsDto statistics) {
-        List<List<LocalDateTime>> data = statistics.getAttendance();
-        List<String> names = statistics.getNames();
-
         String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ".xlsx";
 
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -38,22 +35,22 @@ public class ExcelManager {
             row.createCell(i + 1).setCellValue(StatisticsDto.date.get(i));
         }
 
-        for (int i = 0; i < names.size(); i++) {
+        List<StatisticsDto.NameAndAttendance> nameAndAttendances = statistics.getNameAndAttendances();
+        for (StatisticsDto.NameAndAttendance nameAndAttendance : nameAndAttendances) {
             row = sheet.createRow(rowNum++);
             int cellNum = 0;
             Cell cell = row.createCell(cellNum++);
-            cell.setCellValue(names.get(i));
+            cell.setCellValue(nameAndAttendance.getName());
 
-            for (LocalDateTime at : data.get(i)) {
+            for (LocalDateTime time : nameAndAttendance.getDateTimes()) {
                 cell = row.createCell(cellNum++);
-                if (at != null) {
-                    if (at.getHour() == 0 && at.getMinute() == 0 && at.getSecond() == 0)
+                if (time != null) {
+                    if (time.getHour() == 0 && time.getMinute() == 0 && time.getSecond() == 0)
                         cell.setCellValue("관리자에 의한 출석");
-                    else cell.setCellValue(at.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    else cell.setCellValue(time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 }
             }
         }
-
 
         CellStyle cellStyle_Table_Center = workbook.createCellStyle();
         cellStyle_Table_Center.setBorderTop(BorderStyle.DOUBLE); //테두리 위쪽
@@ -65,7 +62,7 @@ public class ExcelManager {
         cell.setCellStyle(cellStyle_Table_Center);
         for (int i = 1; i <= StatisticsDto.date.size(); i++) {
             String colAlphabet = getColAlphabet(i);
-            String formula = "COUNTA(" + colAlphabet + "2:" + colAlphabet + (names.size() + 1) + ")";
+            String formula = "COUNTA(" + colAlphabet + "2:" + colAlphabet + (nameAndAttendances.size() + 1) + ")";
             cell = row.createCell(i);
             cell.setCellFormula(formula);
             cell.setCellStyle(cellStyle_Table_Center);

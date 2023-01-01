@@ -63,13 +63,10 @@ public class AdminService {
          * Debug
          */
         {
-            List<List<LocalDateTime>> statisticsAttendances = statistics.getAttendance();
-            List<String> names = statistics.getNames();
-            for (int i = 0; i < names.size(); i++) {
-                System.out.print(names.get(i) + " : ");
-
-                for (LocalDateTime time : statisticsAttendances.get(i)) {
-
+            List<StatisticsDto.NameAndAttendance> nameAndAttendances = statistics.getNameAndAttendances();
+            for (StatisticsDto.NameAndAttendance nameAndAttendance : nameAndAttendances) {
+                System.out.print(nameAndAttendance.getName() + " : ");
+                for (LocalDateTime time : nameAndAttendance.getDateTimes()) {
                     if (time != null) System.out.print("O ");
                     else System.out.print("X ");
                 }
@@ -88,6 +85,7 @@ public class AdminService {
 
     public List<UserManagerDto> findUserAll() {
         return userRepository.findAll().stream()
+                .sorted(Comparator.comparing(User::getTeam))
                 .map(UserManagerDto::of)
                 .toList();
     }
@@ -104,11 +102,11 @@ public class AdminService {
             statistics.addAttendance(user.getName(), attendance.getCreatedAt());
         }
 
-        List<LocalDateTime> localDateTimes = statistics.getAttendance().get(0);
+        List<LocalDateTime> dateTimes = statistics.getNameAndAttendances().get(0).getDateTimes();
         List<String> date = StatisticsDto.date;
         List<UserDetailDto.AttendanceDate> attendanceDates = new ArrayList<>();
-        for (int i = 0; i < localDateTimes.size(); i++) {
-            attendanceDates.add(new UserDetailDto.AttendanceDate(date.get(i), localDateTimes.get(i)));
+        for (int i = 0; i < dateTimes.size(); i++) {
+            attendanceDates.add(new UserDetailDto.AttendanceDate(date.get(i), dateTimes.get(i)));
         }
 
         return UserDetailDto.of(user, attendanceDates);

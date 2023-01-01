@@ -1,6 +1,7 @@
 package com.sungam1004.register.dto;
 
 import com.sungam1004.register.domain.User;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -63,39 +64,41 @@ public class StatisticsDto {
                     "2023-12-24",
                     "2023-12-31");
 
-    private List<String> names = new ArrayList<>();
-    private Map<String, Long> mapNameIndex = new HashMap<>();
-    private List<List<LocalDateTime>> attendance = new ArrayList<>();
+    @Getter
+    public static class NameAndAttendance {
+        String name;
+        List<LocalDateTime> dateTimes;
+
+        public NameAndAttendance(String name) {
+            this.name = name;
+            this.dateTimes = new ArrayList<>(Collections.nCopies(date.size(), null));
+        }
+    }
+
+    private final Map<String, Integer> mapNameIndex = new HashMap<>();
+    private final List<NameAndAttendance> nameAndAttendances = new ArrayList<>();
 
     public void setName(List<User> users) {
         for (User user : users) {
-            names.add(user.getName());
-            mapNameIndex.put(user.getName(), user.getId());
-
-            List<LocalDateTime> dd = new ArrayList<>();
-            for (int i = 0; i < date.size(); i++) dd.add(null);
-            attendance.add(dd);
+            mapNameIndex.put(user.getName(), nameAndAttendances.size());
+            nameAndAttendances.add(new NameAndAttendance(user.getName()));
         }
     }
 
     public void addAttendance(String name, LocalDateTime dateTime) {
-        int index = names.size() == 1 ? 0 : mapNameIndex.get(name).intValue() - 1;
+        int index = mapNameIndex.get(name);
+        NameAndAttendance nameAndAttendance = nameAndAttendances.get(index);
         String attendanceDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(dateTime);
 
         for (int i = 0; i < date.size(); i++) {
             if (Objects.equals(date.get(i), attendanceDate)) {
-                attendance.get(index).set(i, dateTime);
-                break;
+                nameAndAttendance.dateTimes.set(i, dateTime);
+                return;
             }
         }
     }
 
-    public List<List<LocalDateTime>> getAttendance() {
-        return attendance;
+    public List<NameAndAttendance> getNameAndAttendances() {
+        return nameAndAttendances;
     }
-
-    public List<String> getNames() {
-        return names;
-    }
-
 }
