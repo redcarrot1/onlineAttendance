@@ -22,6 +22,9 @@
     </div>
 
     <form th:action="@{/attendance}" method="post" th:object="${AttendanceRequestDto}">
+        <div th:if="${#fields.hasErrors('global')}">
+            <p class="field-error" th:each="err : ${#fields.errors('global')}" th:text="${err}">글로벌 오류 메시지</p>
+        </div>
         <div>
             <label for="name">이름</label>
             <input type="text" id="name" th:field="*{name}"

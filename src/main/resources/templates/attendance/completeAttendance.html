@@ -17,10 +17,9 @@
 </head>
 <body>
 <div class="container">
-    <div class="py-5 text-center" th:object="${attendance}">
+    <div class="py-5 text-center">
         <h2>출석이 완료되었습니다.</h2>
-        <span th:text="|출석일: *{attendanceNumber}|"></span>
-        <span th:text="|결석일: *{absenceNumber}|"></span>
+        <h3 th:text="|팀이름: ${team}|"></h3>
     </div>
 </div>
 </body>

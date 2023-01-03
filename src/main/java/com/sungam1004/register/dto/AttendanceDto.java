@@ -26,13 +26,11 @@ public class AttendanceDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Response {
-        private Integer absenceNumber;
-        private Integer attendanceNumber;
+        private String team;
 
         public static AttendanceDto.Response of(User user) {
             return Response.builder()
-                    .absenceNumber(user.getAbsenceNumber())
-                    .attendanceNumber(user.getAttendanceNumber())
+                    .team(user.getTeam().toString())
                     .build();
         }
     }
