@@ -1,7 +1,7 @@
 package com.sungam1004.register.controller.admin;
 
-import com.sungam1004.register.Exception.CustomException;
-import com.sungam1004.register.Exception.ErrorCode;
+import com.sungam1004.register.exception.CustomException;
+import com.sungam1004.register.exception.ErrorCode;
 import com.sungam1004.register.domain.Team;
 import com.sungam1004.register.dto.AddUserDto;
 import com.sungam1004.register.service.AdminService;

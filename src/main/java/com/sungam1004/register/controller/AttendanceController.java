@@ -1,7 +1,7 @@
 package com.sungam1004.register.controller;
 
-import com.sungam1004.register.Exception.CustomException;
-import com.sungam1004.register.Exception.ErrorCode;
+import com.sungam1004.register.exception.CustomException;
+import com.sungam1004.register.exception.ErrorCode;
 import com.sungam1004.register.dto.AttendanceDto;
 import com.sungam1004.register.service.AttendanceService;
 import jakarta.validation.Valid;

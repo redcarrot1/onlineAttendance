@@ -1,7 +1,7 @@
 package com.sungam1004.register.service;
 
-import com.sungam1004.register.Exception.CustomException;
-import com.sungam1004.register.Exception.ErrorCode;
+import com.sungam1004.register.exception.CustomException;
+import com.sungam1004.register.exception.ErrorCode;
 import com.sungam1004.register.utill.PasswordManager;
 import com.sungam1004.register.domain.Attendance;
 import com.sungam1004.register.domain.User;

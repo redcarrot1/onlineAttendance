@@ -1,4 +1,4 @@
-package com.sungam1004.register.Exception;
+package com.sungam1004.register.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

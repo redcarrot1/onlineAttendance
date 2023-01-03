@@ -1,7 +1,7 @@
 package com.sungam1004.register.utill;
 
-import com.sungam1004.register.Exception.CustomException;
-import com.sungam1004.register.Exception.ErrorCode;
+import com.sungam1004.register.exception.CustomException;
+import com.sungam1004.register.exception.ErrorCode;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
