@@ -24,9 +24,6 @@ public class AttendanceDto {
     }
 
     @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class Response {
 
         private String team;
