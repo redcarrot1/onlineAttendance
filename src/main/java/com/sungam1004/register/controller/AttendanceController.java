@@ -37,9 +37,9 @@ public class AttendanceController {
             return "attendance/attendance";
         }
 
-        AttendanceDto.Response response = null;
+        String team = null;
         try {
-            response = attendanceService.saveAttendance(requestDto.getName(), requestDto.getPassword());
+            team = attendanceService.saveAttendance(requestDto.getName(), requestDto.getPassword());
         } catch (CustomException e) {
             if (e.getError() == ErrorCode.NOT_FOUND_USER) {
                 bindingResult.rejectValue("name", "0", e.getMessage());
@@ -52,14 +52,15 @@ public class AttendanceController {
             }
             return "attendance/attendance";
         }
-        redirectAttributes.addAttribute("team", response.getTeam());
+        redirectAttributes.addAttribute("team", team);
         return "redirect:/attendance/completeAttendance";
     }
 
     @GetMapping("attendance/completeAttendance")
     public String attendanceCompletePage(@RequestParam String team, Model model) {
         log.info("team={}", team);
-        model.addAttribute("team", team);
+        AttendanceDto.Response response = attendanceService.findTodayAttendanceByTeam(team);
+        model.addAttribute("teamAttendance", response);
         return "attendance/completeAttendance";
     }
 

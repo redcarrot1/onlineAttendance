@@ -1,12 +1,14 @@
 package com.sungam1004.register.dto;
 
-import com.sungam1004.register.domain.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AttendanceDto {
 
@@ -26,12 +28,13 @@ public class AttendanceDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Response {
-        private String team;
 
-        public static AttendanceDto.Response of(User user) {
-            return Response.builder()
-                    .team(user.getTeam().toString())
-                    .build();
+        private String team;
+        private List<String> attendanceNames = new ArrayList<>();
+        private List<String> notAttendanceNames = new ArrayList<>();
+
+        public Response(String team) {
+            this.team = team;
         }
     }
 }

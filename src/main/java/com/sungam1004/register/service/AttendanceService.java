@@ -1,6 +1,7 @@
 package com.sungam1004.register.service;
 
 import com.sungam1004.register.domain.Attendance;
+import com.sungam1004.register.domain.Team;
 import com.sungam1004.register.domain.User;
 import com.sungam1004.register.dto.AttendanceDto;
 import com.sungam1004.register.exception.CustomException;
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -28,7 +32,7 @@ public class AttendanceService {
     private final UserRepository userRepository;
     private final PasswordManager passwordManager;
 
-    public AttendanceDto.Response saveAttendance(String name, String password) {
+    public String saveAttendance(String name, String password) {
         if (!passwordManager.isCorrectUserPassword(password)) {
             throw new CustomException(ErrorCode.INCORRECT_PASSWORD);
         }
@@ -41,7 +45,7 @@ public class AttendanceService {
             attendanceRepository.save(attendance);
             user.increaseAttendanceNumber();
             log.info("출석이 성공적으로 저장되었습니다. name={}, dateTime={}", name, attendance.getCreatedAt());
-            return AttendanceDto.Response.of(user);
+            return user.getTeam().toString();
         }
         else {
             throw new CustomException(ErrorCode.NOT_FOUND_USER);
@@ -52,5 +56,20 @@ public class AttendanceService {
         LocalDate date = LocalDate.now();
         DayOfWeek dayOfWeek = date.getDayOfWeek();
         return dayOfWeek.getValue() == 7; // 월=1, 일=7
+    }
+
+    public AttendanceDto.Response findTodayAttendanceByTeam(String strTeam) {
+        Team team = Team.convertTeamByString(strTeam);
+        List<User> users = userRepository.findByTeam(team);
+
+        AttendanceDto.Response response = new AttendanceDto.Response(strTeam);
+        LocalDateTime startDatetime = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(0, 0, 0)); //어제 00:00:00
+        LocalDateTime endDatetime = LocalDateTime.now();
+        for (User user : users) {
+            Optional<Attendance> optionalAttendance = attendanceRepository.findByUserAndCreatedAtBetween(user, startDatetime, endDatetime);
+            if (optionalAttendance.isPresent()) response.getAttendanceNames().add(user.getName());
+            else response.getNotAttendanceNames().add(user.getName());
+        }
+        return response;
     }
 }

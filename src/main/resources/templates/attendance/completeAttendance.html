@@ -19,7 +19,21 @@
 <div class="container">
     <div class="py-5 text-center">
         <h2>출석이 완료되었습니다.</h2>
-        <h3 th:text="|팀이름: ${team}|"></h3>
+        <br/>
+        <div th:object="${teamAttendance}">
+            <h4 th:text="*{team}">팀이름</h4>
+
+            <h4>현재 출석자</h4>
+            <div th:each="name : *{attendanceNames}">
+                <span th:text="${name}">name</span>
+            </div>
+            <br/>
+            <h4>현재 미출석자</h4>
+            <div th:each="name : *{notAttendanceNames}">
+                <span th:text="${name}">name</span>
+            </div>
+        </div>
+
     </div>
 </div>
 </body>
