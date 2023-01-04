@@ -21,6 +21,11 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
 
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
+
 file:
   path: /workspace/file
   #path: /Users/hongseungtaeg/Desktop/toyproject/toyProject7-register/file
