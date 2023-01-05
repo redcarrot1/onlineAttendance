@@ -1,5 +1,6 @@
 package com.sungam1004.register.domain;
 
+import com.sungam1004.register.dto.StatisticsDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -34,7 +35,7 @@ public class User {
         this.birth = birth;
         this.team = team;
         this.attendanceNumber = 0;
-        this.absenceNumber = 0;
+        this.absenceNumber = StatisticsDto.date.size();
     }
 
     public void increaseAttendanceNumber() {
