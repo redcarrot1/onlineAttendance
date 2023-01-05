@@ -2,6 +2,7 @@ package com.sungam1004.register.utill;
 
 import com.sungam1004.register.exception.CustomException;
 import com.sungam1004.register.exception.ErrorCode;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -10,8 +11,11 @@ import java.util.regex.Pattern;
 @Component
 public class PasswordManager {
 
-    private String userPassword = "1234"; // 초기화 비밀번호
-    private String adminPassword = "tjddkaryghl"; // 초기화비밀번호
+    @Value("${password.user}")
+    public String userPassword;
+
+    @Value("${password.admin}")
+    public String adminPassword;
 
     public void changeUserPassword(String nPassword) throws CustomException {
         if (Pattern.matches("^[0-9]{4}$", nPassword)) {

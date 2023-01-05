@@ -1,6 +1,7 @@
 package com.sungam1004.register.utill;
 
 
+import com.sungam1004.register.domain.Team;
 import com.sungam1004.register.dto.StatisticsDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -22,19 +23,35 @@ public class ExcelManager {
 
     @Value("${file.path}")
     public String filePath;
+    public String fileName;
 
     public String createExcelFile(StatisticsDto statistics) {
-        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ".xlsx";
+        fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ".xlsx";
 
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("출석부");
 
+
+        /**
+         * 날짜
+         */
         int rowNum = 0;
         Row row = sheet.createRow(rowNum++);
+
+        CellStyle cellStyle_Date_Border = workbook.createCellStyle();
+        cellStyle_Date_Border.setBorderRight(BorderStyle.MEDIUM);
+
         for (int i = 0; i < StatisticsDto.date.size(); i++) {
-            row.createCell(i + 1).setCellValue(StatisticsDto.date.get(i));
+            String[] split = StatisticsDto.date.get(i).split("-");
+            Cell cell = row.createCell(i + 1);
+            cell.setCellValue(split[0] + "-" + split[1]);
+            if (23 < Integer.parseInt(split[2]))
+                cell.setCellStyle(cellStyle_Date_Border);
         }
 
+        /**
+         * 유저
+         */
         List<StatisticsDto.NameAndAttendance> nameAndAttendances = statistics.getNameAndAttendances();
         for (StatisticsDto.NameAndAttendance nameAndAttendance : nameAndAttendances) {
             row = sheet.createRow(rowNum++);
@@ -42,32 +59,55 @@ public class ExcelManager {
             Cell cell = row.createCell(cellNum++);
             cell.setCellValue(nameAndAttendance.getName());
 
+            CellStyle cellStyle_Team_Color = workbook.createCellStyle();
+            cellStyle_Team_Color.setFillForegroundColor(getTeamColor(nameAndAttendance.getTeam()));  // 배경색
+            cellStyle_Team_Color.setFillPattern(FillPatternType.SOLID_FOREGROUND);    //채우기 적용
+            cell.setCellStyle(cellStyle_Team_Color);
+
             for (LocalDateTime time : nameAndAttendance.getDateTimes()) {
                 cell = row.createCell(cellNum++);
                 if (time != null) {
                     if (time.getHour() == 0 && time.getMinute() == 0 && time.getSecond() == 0)
                         cell.setCellValue("관리자에 의한 출석");
-                    else cell.setCellValue(time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    else cell.setCellValue(time.format(DateTimeFormatter.ofPattern("MM-dd HH:mm:ss")));
+                    //if (23 < time.getDayOfMonth()) cell.setCellStyle(cellStyle_Date_Border);
                 }
             }
         }
 
-        CellStyle cellStyle_Table_Center = workbook.createCellStyle();
-        cellStyle_Table_Center.setBorderTop(BorderStyle.DOUBLE); //테두리 위쪽
-        cellStyle_Table_Center.setAlignment(HorizontalAlignment.CENTER);
+
+        /**
+         * 합계 함수
+         */
+        CellStyle cellStyle_Sum_Border = workbook.createCellStyle();
+        cellStyle_Sum_Border.setBorderTop(BorderStyle.DOUBLE); //테두리 위쪽
+        cellStyle_Sum_Border.setAlignment(HorizontalAlignment.CENTER);
 
         row = sheet.createRow(rowNum++);
         Cell cell = row.createCell(0);
         cell.setCellValue("합계");
-        cell.setCellStyle(cellStyle_Table_Center);
+        cell.setCellStyle(cellStyle_Sum_Border);
         for (int i = 1; i <= StatisticsDto.date.size(); i++) {
             String colAlphabet = getColAlphabet(i);
             String formula = "COUNTA(" + colAlphabet + "2:" + colAlphabet + (nameAndAttendances.size() + 1) + ")";
             cell = row.createCell(i);
             cell.setCellFormula(formula);
-            cell.setCellStyle(cellStyle_Table_Center);
+            cell.setCellStyle(cellStyle_Sum_Border);
         }
 
+        saveFile(workbook);
+        return fileName;
+    }
+
+    private short getTeamColor(Team team) {
+        // https://t1.daumcdn.net/cfile/tistory/23448C3F5953472C20?original
+        if (team == Team.ATeam) return IndexedColors.LEMON_CHIFFON.getIndex();
+        if (team == Team.BTeam) return IndexedColors.TAN.getIndex();
+        if (team == Team.CTeam) return IndexedColors.LIME.getIndex();
+        else return IndexedColors.CORAL.getIndex();
+    }
+
+    private void saveFile(XSSFWorkbook workbook) {
         try {
             if (new File(filePath).mkdir()) log.info("디렉터리가 생성되었습니다.");
             FileOutputStream out = new FileOutputStream(new File(filePath, fileName));
@@ -78,7 +118,6 @@ public class ExcelManager {
             log.error("엑셀 저장에 실패했습니다.");
             e.printStackTrace();
         }
-        return fileName;
     }
 
     private String getColAlphabet(int index) {
