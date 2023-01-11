@@ -40,11 +40,17 @@ public class ExcelManager {
 
         CellStyle cellStyle_Date_Border = workbook.createCellStyle();
         cellStyle_Date_Border.setBorderRight(BorderStyle.MEDIUM);
+        cellStyle_Date_Border.setAlignment(HorizontalAlignment.CENTER);
+
+        CellStyle cellStyle_Center = workbook.createCellStyle();
+        cellStyle_Center.setAlignment(HorizontalAlignment.CENTER);
 
         for (int i = 0; i < StatisticsDto.date.size(); i++) {
             String[] split = StatisticsDto.date.get(i).split("-");
             Cell cell = row.createCell(i + 1);
-            cell.setCellValue(split[0] + "-" + split[1]);
+            cell.setCellValue(split[1] + "-" + split[2]);
+            cell.setCellStyle(cellStyle_Center);
+            sheet.setColumnWidth(i + 1, 2000);
             if (23 < Integer.parseInt(split[2]))
                 cell.setCellStyle(cellStyle_Date_Border);
         }
@@ -66,9 +72,10 @@ public class ExcelManager {
 
             for (LocalDateTime time : nameAndAttendance.getDateTimes()) {
                 cell = row.createCell(cellNum++);
+                cell.setCellStyle(cellStyle_Center);
                 if (time != null) {
                     if (time.getHour() == 0 && time.getMinute() == 0 && time.getSecond() == 0)
-                        cell.setCellValue("관리자에 의한 출석");
+                        cell.setCellValue("관리자");
                     else cell.setCellValue(time.format(DateTimeFormatter.ofPattern("MM-dd HH:mm:ss")));
                     //if (23 < time.getDayOfMonth()) cell.setCellStyle(cellStyle_Date_Border);
                 }
@@ -104,6 +111,8 @@ public class ExcelManager {
         if (team == Team.ATeam) return IndexedColors.LEMON_CHIFFON.getIndex();
         if (team == Team.BTeam) return IndexedColors.TAN.getIndex();
         if (team == Team.CTeam) return IndexedColors.LIME.getIndex();
+        if (team == Team.DTeam) return IndexedColors.AQUA.getIndex();
+        if (team == Team.ETeam) return IndexedColors.SEA_GREEN.getIndex();
         else return IndexedColors.CORAL.getIndex();
     }
 

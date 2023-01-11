@@ -28,7 +28,6 @@
 <body class="text-center">
 <div class="form" th:object="${userDetailDto}">
     <h1 class="h2 mb-3 fw-normal">유저 출석 상세 정보</h1>
-    <button class="w-50 btn btn-warning btn-sm" onclick="location.href='/admin/manager'">뒤로가기</button>
 
     <div>
         <span>이름 : [[*{name}]]</span><br/>
@@ -38,6 +37,7 @@
         <span>전화번호 : [[*{phone}]]</span><br/>
         <span>팀 : [[*{team}]]</span><br/>
     </div>
+    <button class="w-50 btn btn-warning btn-sm" onclick="location.href='/admin/manager'">뒤로가기</button>
 
     <table class="table table-striped table-hover" style="white-space: nowrap; max-width: 50%; margin-left:auto; margin-right:auto;">
         <thead>

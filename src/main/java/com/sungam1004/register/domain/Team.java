@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 public enum Team {
-    ATeam, BTeam, CTeam;
+    ATeam, BTeam, CTeam, DTeam, ETeam;
 
     public static List<String> getTeamNameList() {
         return Stream.of(Team.values())
