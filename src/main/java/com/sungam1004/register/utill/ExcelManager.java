@@ -45,14 +45,16 @@ public class ExcelManager {
         CellStyle cellStyle_Center = workbook.createCellStyle();
         cellStyle_Center.setAlignment(HorizontalAlignment.CENTER);
 
+        CellStyle cellStyle_Center_And_BottomLine = workbook.createCellStyle();
+        cellStyle_Center_And_BottomLine.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle_Center_And_BottomLine.setBorderBottom(BorderStyle.THIN);
+
         for (int i = 0; i < StatisticsDto.date.size(); i++) {
             String[] split = StatisticsDto.date.get(i).split("-");
             Cell cell = row.createCell(i + 1);
             cell.setCellValue(split[1] + "-" + split[2]);
-            cell.setCellStyle(cellStyle_Center);
+            cell.setCellStyle(cellStyle_Center_And_BottomLine);
             sheet.setColumnWidth(i + 1, 2000);
-            if (23 < Integer.parseInt(split[2]))
-                cell.setCellStyle(cellStyle_Date_Border);
         }
 
         /**
@@ -77,7 +79,6 @@ public class ExcelManager {
                     if (time.getHour() == 0 && time.getMinute() == 0 && time.getSecond() == 0)
                         cell.setCellValue("관리자");
                     else cell.setCellValue(time.format(DateTimeFormatter.ofPattern("MM-dd HH:mm:ss")));
-                    //if (23 < time.getDayOfMonth()) cell.setCellStyle(cellStyle_Date_Border);
                 }
             }
         }
@@ -100,6 +101,33 @@ public class ExcelManager {
             cell = row.createCell(i);
             cell.setCellFormula(formula);
             cell.setCellStyle(cellStyle_Sum_Border);
+        }
+
+        CellStyle cellStyle_Double_And_Border = workbook.createCellStyle();
+        cellStyle_Double_And_Border.setBorderTop(BorderStyle.DOUBLE); //테두리 위쪽
+        cellStyle_Double_And_Border.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle_Double_And_Border.setBorderRight(BorderStyle.MEDIUM);
+
+        CellStyle cellStyle_Date_Limit = workbook.createCellStyle();
+        cellStyle_Date_Limit.setBorderRight(BorderStyle.MEDIUM);
+        cellStyle_Date_Limit.setBorderBottom(BorderStyle.THIN);
+        cellStyle_Date_Limit.setAlignment(HorizontalAlignment.CENTER);
+
+        for (int i = 0; i < StatisticsDto.date.size(); i++) {
+            String[] split = StatisticsDto.date.get(i).split("-");
+            if (24 < Integer.parseInt(split[2]) || Integer.parseInt(split[1]) == 9 && Integer.parseInt(split[2]) == 24) {
+                row = sheet.getRow(0);
+                cell = row.getCell(i + 1);
+                cell.setCellStyle(cellStyle_Date_Limit);
+                for (int j = 1; j < rowNum - 1; j++) {
+                    row = sheet.getRow(j);
+                    cell = row.getCell(i + 1);
+                    cell.setCellStyle(cellStyle_Date_Border);
+                }
+                row = sheet.getRow(rowNum - 1);
+                cell = row.getCell(i + 1);
+                cell.setCellStyle(cellStyle_Double_And_Border);
+            }
         }
 
         saveFile(workbook);
