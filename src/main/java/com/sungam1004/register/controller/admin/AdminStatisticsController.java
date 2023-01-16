@@ -4,9 +4,9 @@ import com.sungam1004.register.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +26,7 @@ public class AdminStatisticsController {
     public String filePath;
 
     @GetMapping
-    public ResponseEntity<Resource> statisticsForm() throws MalformedURLException {
+    public ResponseEntity<UrlResource> statisticsForm() throws MalformedURLException {
         String fileName = adminService.statistics();
         UrlResource resource = new UrlResource("file:" + filePath + "/" + fileName);
 
@@ -35,6 +35,7 @@ public class AdminStatisticsController {
         String contentDisposition = "attachment; filename=\"" + fileName + "\"";
 
         return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
                 .body(resource);
     }

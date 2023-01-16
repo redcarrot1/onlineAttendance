@@ -1,13 +1,13 @@
 -- Test 실행 시 필요한 초기 데이터입니다. h2 문법에 맞춰져 있습니다.
-insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (1, 53, 0, '김민준', '86.07.24.','055-80-01079', 'ATeam') ;
-insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (2, 53, 0, '박서준', '86.09.02.','820-13-96390', 'CTeam') ;
-insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (3, 53, 0, '김도윤', '92.03.09.','457-08-85095', 'BTeam') ;
-insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (4, 53, 0, '이예준', '92.10.23.','546-55-62521', 'DTeam') ;
-insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (5, 53, 0, '김시우', '94.01.02.','232-19-51006', 'ETeam') ;
-insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (6, 53, 0, '이하준', '94.02.27.','874-62-56701', 'DTeam') ;
-insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (7, 53, 0, '이주원', '94.07.16.','767-49-36118', 'BTeam') ;
-insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (8, 53, 0, '송지호', '94.10.27.','304-92-40818', 'DTeam') ;
-insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (9, 53, 0, '박준우', '94.10.24.','557-01-51378', 'CTeam') ;
+insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (1, 53, 0, '김민준', '86.07.24.','055-80-01079', 'ATeam');
+insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (2, 53, 0, '박서준', '86.09.02.','820-13-96390', 'CTeam');
+insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (3, 53, 0, '김도윤', '92.03.09.','457-08-85095', 'BTeam');
+insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (4, 53, 0, '이예준', '92.10.23.','546-55-62521', 'DTeam');
+insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (5, 53, 0, '김시우', '94.01.02.','232-19-51006', 'ETeam');
+insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (6, 53, 0, '이하준', '94.02.27.','874-62-56701', 'DTeam');
+insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (7, 53, 0, '이주원', '94.07.16.','767-49-36118', 'BTeam');
+insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (8, 53, 0, '송지호', '94.10.27.','304-92-40818', 'DTeam');
+insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (9, 53, 0, '박준우', '94.10.24.','557-01-51378', 'CTeam');
 insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (10, 53, 0, '김준서','95.06.22.','420-88-10754', 'BTeam');
 insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (11, 53, 0, '손건우','95.10.12.','930-43-85131', 'CTeam');
 insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (12, 53, 0, '최도현','95.11.11.','129-64-23328', 'BTeam');
