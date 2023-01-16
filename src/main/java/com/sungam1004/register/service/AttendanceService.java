@@ -41,6 +41,11 @@ public class AttendanceService {
         Optional<User> optionalUser = userRepository.findByName(name);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
+
+            if (attendanceRepository.existsByUserAndCreatedAtAfter(user, LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0)))) {
+                throw new CustomException(ErrorCode.DUPLICATE_ATTENDANCE);
+            }
+
             Attendance attendance = new Attendance(user);
             attendanceRepository.save(attendance);
             user.increaseAttendanceNumber();
@@ -63,7 +68,7 @@ public class AttendanceService {
         List<User> users = userRepository.findByTeam(team);
 
         AttendanceDto.Response response = new AttendanceDto.Response(strTeam);
-        LocalDateTime startDatetime = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(0, 0, 0)); //어제 00:00:00
+        LocalDateTime startDatetime = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0)); //오늘 00:00:00
         LocalDateTime endDatetime = LocalDateTime.now();
         for (User user : users) {
             Optional<Attendance> optionalAttendance = attendanceRepository.findByUserAndCreatedAtBetween(user, startDatetime, endDatetime);

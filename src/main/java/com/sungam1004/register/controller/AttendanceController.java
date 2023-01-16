@@ -37,7 +37,7 @@ public class AttendanceController {
             return "attendance/attendance";
         }
 
-        String team = null;
+        String team;
         try {
             team = attendanceService.saveAttendance(requestDto.getName(), requestDto.getPassword());
         } catch (CustomException e) {
@@ -47,7 +47,7 @@ public class AttendanceController {
             if (e.getError() == ErrorCode.INCORRECT_PASSWORD) {
                 bindingResult.rejectValue("password", "0", e.getMessage());
             }
-            if (e.getError() == ErrorCode.INVALID_DAY_OF_WEEK) {
+            if (e.getError() == ErrorCode.INVALID_DAY_OF_WEEK || e.getError() == ErrorCode.DUPLICATE_ATTENDANCE) {
                 bindingResult.addError(new ObjectError(e.getError().name(), e.getMessage())); // 글로벌 오류
             }
             return "attendance/attendance";

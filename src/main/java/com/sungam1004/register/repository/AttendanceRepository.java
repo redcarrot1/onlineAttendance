@@ -12,4 +12,6 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     List<Attendance> findByUser(User user);
 
     Optional<Attendance> findByUserAndCreatedAtBetween(User user, LocalDateTime startDatetime, LocalDateTime endDatetime);
+
+    boolean existsByUserAndCreatedAtAfter(User user, LocalDateTime date);
 }
