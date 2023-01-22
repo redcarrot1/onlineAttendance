@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     List<Attendance> findByUser(User user);
 
-    Optional<Attendance> findByUserAndCreatedAtBetween(User user, LocalDateTime startDatetime, LocalDateTime endDatetime);
+    Optional<Attendance> findByUserAndCreatedAtBetween(User user, LocalDateTime start, LocalDateTime end);
 
     boolean existsByUserAndCreatedAtAfter(User user, LocalDateTime date);
 }

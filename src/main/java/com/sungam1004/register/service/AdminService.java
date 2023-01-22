@@ -1,13 +1,13 @@
 package com.sungam1004.register.service;
 
-import com.sungam1004.register.exception.CustomException;
-import com.sungam1004.register.exception.ErrorCode;
 import com.sungam1004.register.domain.Attendance;
 import com.sungam1004.register.domain.User;
 import com.sungam1004.register.dto.AddUserDto;
 import com.sungam1004.register.dto.StatisticsDto;
 import com.sungam1004.register.dto.UserDetailDto;
 import com.sungam1004.register.dto.UserManagerDto;
+import com.sungam1004.register.exception.CustomException;
+import com.sungam1004.register.exception.ErrorCode;
 import com.sungam1004.register.repository.AttendanceRepository;
 import com.sungam1004.register.repository.UserRepository;
 import com.sungam1004.register.utill.ExcelManager;
@@ -17,11 +17,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -112,24 +115,21 @@ public class AdminService {
         return UserDetailDto.of(user, attendanceDates);
     }
 
-    public void toggleAttendance(Long userId, String date) {
+    public void toggleAttendance(Long userId, String strDate) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-        List<Attendance> attendances = attendanceRepository.findByUser(user);
+        LocalDate date = LocalDate.parse(strDate, DateTimeFormatter.ISO_DATE);
 
-        for (Attendance attendance : attendances) {
-            String createdAt = attendance.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            if (createdAt.equals(date)) {
-                attendanceRepository.delete(attendance);
-                user.decreaseAttendanceNumber();
-                user.increaseAbsenceNumber();
-                return;
-            }
+        Optional<Attendance> optionalAttendance
+                = attendanceRepository.findByUserAndCreatedAtBetween(user, date.atStartOfDay(), date.atTime(LocalTime.MAX));
+        if (optionalAttendance.isPresent()) {
+            attendanceRepository.delete(optionalAttendance.get());
+            user.decreaseAttendanceNumber();
+            user.increaseAbsenceNumber();
+            return;
         }
-        String[] splitDate = date.split("-");
-        LocalDateTime saveDateTime = LocalDateTime.of(Integer.parseInt(splitDate[0]), Integer.parseInt(splitDate[1]),
-                Integer.parseInt(splitDate[2]), 0, 0);
-        attendanceRepository.save(new Attendance(user, saveDateTime));
+
+        attendanceRepository.save(new Attendance(user, date.atStartOfDay()));
         user.decreaseAbsenceNumber();
         user.increaseAttendanceNumber();
     }

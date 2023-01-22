@@ -17,9 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -38,28 +36,22 @@ public class AttendanceService {
         }
         if (!validSunday()) throw new CustomException(ErrorCode.INVALID_DAY_OF_WEEK);
 
-        Optional<User> optionalUser = userRepository.findByName(name);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+        User user = userRepository.findByName(name)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
-            if (attendanceRepository.existsByUserAndCreatedAtAfter(user, LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0)))) {
-                throw new CustomException(ErrorCode.DUPLICATE_ATTENDANCE);
-            }
+        if (attendanceRepository.existsByUserAndCreatedAtAfter(user, LocalDate.now().atStartOfDay())) {
+            throw new CustomException(ErrorCode.DUPLICATE_ATTENDANCE);
+        }
 
-            Attendance attendance = new Attendance(user);
-            attendanceRepository.save(attendance);
-            user.increaseAttendanceNumber();
-            log.info("출석이 성공적으로 저장되었습니다. name={}, dateTime={}", name, attendance.getCreatedAt());
-            return user.getTeam().toString();
-        }
-        else {
-            throw new CustomException(ErrorCode.NOT_FOUND_USER);
-        }
+        Attendance attendance = new Attendance(user);
+        attendanceRepository.save(attendance);
+        user.increaseAttendanceNumber();
+        log.info("출석이 성공적으로 저장되었습니다. name={}, dateTime={}", name, attendance.getCreatedAt());
+        return user.getTeam().toString();
     }
 
     private boolean validSunday() {
-        LocalDate date = LocalDate.now();
-        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
         return dayOfWeek.getValue() == 7; // 월=1, 일=7
     }
 
@@ -68,11 +60,10 @@ public class AttendanceService {
         List<User> users = userRepository.findByTeam(team);
 
         AttendanceDto.Response response = new AttendanceDto.Response(strTeam);
-        LocalDateTime startDatetime = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0)); //오늘 00:00:00
-        LocalDateTime endDatetime = LocalDateTime.now();
+        LocalDateTime startDatetime = LocalDate.now().atStartOfDay();
         for (User user : users) {
-            Optional<Attendance> optionalAttendance = attendanceRepository.findByUserAndCreatedAtBetween(user, startDatetime, endDatetime);
-            if (optionalAttendance.isPresent()) response.getAttendanceNames().add(user.getName());
+            if (attendanceRepository.existsByUserAndCreatedAtAfter(user, startDatetime))
+                response.getAttendanceNames().add(user.getName());
             else response.getNotAttendanceNames().add(user.getName());
         }
         return response;

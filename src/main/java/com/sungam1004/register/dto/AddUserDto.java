@@ -33,7 +33,7 @@ public class AddUserDto {
                     .name(name)
                     .birth(birth)
                     .phone(phone)
-                    .team(Team.valueOf(team))
+                    .team(Team.convertTeamByString(team))
                     .build();
         }
     }

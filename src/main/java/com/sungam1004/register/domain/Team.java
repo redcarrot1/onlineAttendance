@@ -4,7 +4,6 @@ import com.sungam1004.register.exception.CustomException;
 import com.sungam1004.register.exception.ErrorCode;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 public enum Team {
@@ -17,9 +16,10 @@ public enum Team {
     }
 
     public static Team convertTeamByString(String strTeam) {
-        return Stream.of(Team.values())
-                .filter(team -> Objects.equals(team.toString(), strTeam))
-                .findFirst()
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+        try {
+            return Team.valueOf(strTeam);
+        } catch (IllegalArgumentException e) {
+            throw new CustomException(ErrorCode.NOT_FOUND_TEAM);
+        }
     }
 }

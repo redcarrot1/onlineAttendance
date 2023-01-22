@@ -11,35 +11,34 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("attendance")
 public class AttendanceController {
 
     private final AttendanceService attendanceService;
 
-    @GetMapping("attendance")
+    @GetMapping
     public String attendancePage(Model model) {
         model.addAttribute("AttendanceRequestDto", new AttendanceDto.Request());
         return "attendance/attendance";
     }
 
-    @PostMapping("attendance")
+    @PostMapping
     public String saveAttendance(@Valid @ModelAttribute("AttendanceRequestDto") AttendanceDto.Request requestDto,
                                  BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "attendance/attendance";
         }
 
-        String team;
         try {
-            team = attendanceService.saveAttendance(requestDto.getName(), requestDto.getPassword());
+            String team = attendanceService.saveAttendance(requestDto.getName(), requestDto.getPassword());
+            redirectAttributes.addAttribute("team", team);
+            return "redirect:/attendance/completeAttendance";
         } catch (CustomException e) {
             if (e.getError() == ErrorCode.NOT_FOUND_USER) {
                 bindingResult.rejectValue("name", "0", e.getMessage());
@@ -52,11 +51,9 @@ public class AttendanceController {
             }
             return "attendance/attendance";
         }
-        redirectAttributes.addAttribute("team", team);
-        return "redirect:/attendance/completeAttendance";
     }
 
-    @GetMapping("attendance/completeAttendance")
+    @GetMapping("completeAttendance")
     public String attendanceCompletePage(@RequestParam String team, Model model) {
         log.info("team={}", team);
         AttendanceDto.Response response = attendanceService.findTodayAttendanceByTeam(team);
