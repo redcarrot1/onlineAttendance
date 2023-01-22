@@ -1,4 +1,4 @@
-package com.sungam1004.register.utill;
+package com.sungam1004.register.manager;
 
 
 import com.sungam1004.register.domain.Team;
@@ -136,11 +136,11 @@ public class ExcelManager {
 
     private short getTeamColor(Team team) {
         // https://t1.daumcdn.net/cfile/tistory/23448C3F5953472C20?original
-        if (team == Team.ATeam) return IndexedColors.LEMON_CHIFFON.getIndex();
-        if (team == Team.BTeam) return IndexedColors.TAN.getIndex();
-        if (team == Team.CTeam) return IndexedColors.LIME.getIndex();
-        if (team == Team.DTeam) return IndexedColors.AQUA.getIndex();
-        if (team == Team.ETeam) return IndexedColors.SEA_GREEN.getIndex();
+        if (team == Team.안준범) return IndexedColors.LEMON_CHIFFON.getIndex();
+        if (team == Team.복덕복덕) return IndexedColors.TAN.getIndex();
+        if (team == Team.부장님) return IndexedColors.LIME.getIndex();
+        if (team == Team.김호정T) return IndexedColors.AQUA.getIndex();
+        if (team == Team.복통) return IndexedColors.SEA_GREEN.getIndex();
         else return IndexedColors.CORAL.getIndex();
     }
 

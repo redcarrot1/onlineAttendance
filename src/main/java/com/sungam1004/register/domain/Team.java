@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public enum Team {
-    ATeam, BTeam, CTeam, DTeam, ETeam;
+    안준범, 부장님, 김호정T, 복덕복덕, 복통;
 
     public static List<String> getTeamNameList() {
         return Stream.of(Team.values())

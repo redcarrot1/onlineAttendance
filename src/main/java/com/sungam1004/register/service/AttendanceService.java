@@ -8,7 +8,7 @@ import com.sungam1004.register.exception.CustomException;
 import com.sungam1004.register.exception.ErrorCode;
 import com.sungam1004.register.repository.AttendanceRepository;
 import com.sungam1004.register.repository.UserRepository;
-import com.sungam1004.register.utill.PasswordManager;
+import com.sungam1004.register.manager.PasswordManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

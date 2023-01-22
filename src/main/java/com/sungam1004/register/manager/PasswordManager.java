@@ -1,4 +1,4 @@
-package com.sungam1004.register.utill;
+package com.sungam1004.register.manager;
 
 import com.sungam1004.register.exception.CustomException;
 import com.sungam1004.register.exception.ErrorCode;
