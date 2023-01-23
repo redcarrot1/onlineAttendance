@@ -1,10 +1,10 @@
 package com.sungam1004.register.controller.admin;
 
-import com.sungam1004.register.exception.CustomException;
-import com.sungam1004.register.exception.ErrorCode;
 import com.sungam1004.register.dto.AdminPasswordDto;
 import com.sungam1004.register.dto.UserPasswordDto;
-import com.sungam1004.register.service.AdminService;
+import com.sungam1004.register.exception.CustomException;
+import com.sungam1004.register.exception.ErrorCode;
+import com.sungam1004.register.service.AdminPasswordService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 public class AdminChangePasswordController {
 
-    private final AdminService adminService;
+    private final AdminPasswordService adminPasswordService;
 
     @GetMapping("/userPassword")
     public String changeUserPasswordForm(Model model) {
@@ -37,7 +37,7 @@ public class AdminChangePasswordController {
             return "admin/password/changeUserPassword";
         }
         try {
-            adminService.changeUserPassword(requestDto.getPassword());
+            adminPasswordService.changeUserPassword(requestDto.getPassword());
         } catch (CustomException e) {
             if (e.getError() == ErrorCode.NOT_FORMAT_MATCH_USER_PASSWORD) {
                 bindingResult.rejectValue("password", "0", e.getMessage());
@@ -60,7 +60,7 @@ public class AdminChangePasswordController {
             return "admin/password/changeAdminPassword";
         }
         try {
-            adminService.changeAdminPassword(requestDto.getPassword());
+            adminPasswordService.changeAdminPassword(requestDto.getPassword());
         } catch (CustomException e) {
             if (e.getError() == ErrorCode.NOT_FORMAT_MATCH_USER_PASSWORD) {
                 bindingResult.rejectValue("password", "0", e.getMessage());

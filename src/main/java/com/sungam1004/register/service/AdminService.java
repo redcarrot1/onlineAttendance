@@ -31,53 +31,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class AdminService {
-
-    private final PasswordManager passwordManager;
     private final UserRepository userRepository;
     private final AttendanceRepository attendanceRepository;
-    private final ExcelManager excelManager;
-
-    public void loginAdmin(String password) {
-        if (!passwordManager.isCorrectAdminPassword(password)) {
-            throw new CustomException(ErrorCode.INCORRECT_PASSWORD);
-        }
-    }
-
-    public void changeUserPassword(String password) throws CustomException {
-        passwordManager.changeUserPassword(password);
-    }
-
-    public void changeAdminPassword(String password) throws CustomException {
-        passwordManager.changeAdminPassword(password);
-    }
-
-    public String statistics() {
-        StatisticsDto statistics = new StatisticsDto();
-        statistics.setName(userRepository.findAll().stream()
-                .sorted(Comparator.comparing(User::getTeam))
-                .toList());
-
-        List<Attendance> attendances = attendanceRepository.findAll();
-        for (Attendance attendance : attendances) {
-            statistics.addAttendance(attendance.getUser().getName(), attendance.getCreatedAt());
-        }
-
-        /**
-         * Debug
-         */
-        {
-            List<StatisticsDto.NameAndAttendance> nameAndAttendances = statistics.getNameAndAttendances();
-            for (StatisticsDto.NameAndAttendance nameAndAttendance : nameAndAttendances) {
-                System.out.print(nameAndAttendance.getName() + " : ");
-                for (LocalDateTime time : nameAndAttendance.getDateTimes()) {
-                    if (time != null) System.out.print("O ");
-                    else System.out.print("X ");
-                }
-                System.out.println();
-            }
-        }
-        return excelManager.createExcelFile(statistics);
-    }
 
     public void addUser(AddUserDto.Request requestDto) {
         if (userRepository.existsByName(requestDto.getName()))

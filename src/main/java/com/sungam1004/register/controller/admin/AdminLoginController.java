@@ -1,9 +1,9 @@
 package com.sungam1004.register.controller.admin;
 
+import com.sungam1004.register.dto.LoginAdminDto;
 import com.sungam1004.register.exception.CustomException;
 import com.sungam1004.register.exception.ErrorCode;
-import com.sungam1004.register.dto.LoginAdminDto;
-import com.sungam1004.register.service.AdminService;
+import com.sungam1004.register.service.AdminPasswordService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("admin")
 @Slf4j
 public class AdminLoginController {
-
-    private final AdminService adminService;
+    private final AdminPasswordService adminPasswordService;
 
     @GetMapping("/login")
     public String loginAdminForm(Model model) {
@@ -37,7 +36,7 @@ public class AdminLoginController {
         }
 
         try {
-            adminService.loginAdmin(requestDto.getPassword());
+            adminPasswordService.loginAdmin(requestDto.getPassword());
         } catch (CustomException e) {
             if (e.getError() == ErrorCode.INCORRECT_PASSWORD) {
                 bindingResult.rejectValue("password", "0", e.getMessage());

@@ -1,6 +1,6 @@
 package com.sungam1004.register.controller.admin;
 
-import com.sungam1004.register.service.AdminService;
+import com.sungam1004.register.service.AdminExcelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,14 +20,14 @@ import java.net.MalformedURLException;
 @Slf4j
 public class AdminStatisticsController {
 
-    private final AdminService adminService;
+    private final AdminExcelService adminExcelService;
 
     @Value("${file.path}")
     public String filePath;
 
     @GetMapping
     public ResponseEntity<UrlResource> statisticsForm() throws MalformedURLException {
-        String fileName = adminService.statistics();
+        String fileName = adminExcelService.statistics();
         UrlResource resource = new UrlResource("file:" + filePath + "/" + fileName);
 
         //아래 문자를 ResponseHeader에 넣어줘야 한다. 그래야 링크를 눌렀을 때 다운이 된다.
