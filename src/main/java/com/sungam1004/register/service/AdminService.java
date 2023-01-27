@@ -10,12 +10,10 @@ import com.sungam1004.register.exception.CustomException;
 import com.sungam1004.register.exception.ErrorCode;
 import com.sungam1004.register.repository.AttendanceRepository;
 import com.sungam1004.register.repository.UserRepository;
-import com.sungam1004.register.manager.ExcelManager;
-import com.sungam1004.register.manager.PasswordManager;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,7 +38,7 @@ public class AdminService {
         User user = requestDto.toEntity();
         userRepository.save(user);
     }
-
+    @Transactional(readOnly = true)
     public List<UserManagerDto> findUserAll() {
         return userRepository.findAll().stream()
                 .sorted(Comparator.comparing(User::getTeam))
@@ -48,6 +46,7 @@ public class AdminService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public UserDetailDto userDetail(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));

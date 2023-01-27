@@ -43,9 +43,8 @@ class AdminPasswordServiceTest {
                 .thenReturn(false);
 
         //when
-        CustomException customException = assertThrows(CustomException.class, () -> {
-            adminPasswordService.loginAdmin(password);
-        });
+        CustomException customException =
+                assertThrows(CustomException.class, () -> adminPasswordService.loginAdmin(password));
 
         //then
         assertEquals(customException.getError(), ErrorCode.INCORRECT_PASSWORD);

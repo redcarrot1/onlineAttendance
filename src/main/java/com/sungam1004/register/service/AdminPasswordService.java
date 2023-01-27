@@ -3,7 +3,7 @@ package com.sungam1004.register.service;
 import com.sungam1004.register.exception.CustomException;
 import com.sungam1004.register.exception.ErrorCode;
 import com.sungam1004.register.manager.PasswordManager;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
