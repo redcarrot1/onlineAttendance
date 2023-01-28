@@ -2,30 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta th:replace="~{fragment/head :: headFrag('출석성공')}"/>
+    <meta th:replace="~{fragment/head :: styleFrag}"/>
     <style>
-        @font-face {
-            font-family: 'GmarketSansMedium';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        * {
-            font-family: 'GmarketSansMedium', sans-serif;
-        }
-
-        .container {
-            max-width: 560px;
-        }
-
-        body {
-            display: flex;
-            align-items: center;
-            padding-top: 40px;
-            padding-bottom: 40px;
-            background-color: #f5f5f5;
-        }
-
         .dashboard {
             display: flex;
         }
@@ -82,31 +60,28 @@
         }
     </script>
 </head>
-<body>
-<div class="container">
-    <div class="py-5 text-center">
-        <h2>출석이 완료되었습니다.</h2>
-        <br/>
-        <div th:object="${teamAttendance}">
-            <h4 th:text="*{team}">팀이름</h4>
+<body class="text-center">
+<div class="form">
+    <h2>출석이 완료되었습니다.</h2>
+    <br/>
+    <div th:object="${teamAttendance}">
+        <h4 th:text="*{team}">팀이름</h4>
 
-            <div class="dashboard">
-                <svg>
-                    <circle class="bg" cx="57" cy="57" r="52">50%</circle>
-                    <circle class="meter" cx="57" cy="57" r="52">70%</circle>
-                </svg>
-            </div>
-            <h4>현재 출석자</h4>
-            <div th:each="name : *{attendanceNames}">
-                <span th:text="${name}">name</span>
-            </div>
-            <br/>
-            <h4>현재 미출석자</h4>
-            <div th:each="name : *{notAttendanceNames}">
-                <span th:text="${name}">name</span>
-            </div>
+        <div class="dashboard">
+            <svg>
+                <circle class="bg" cx="57" cy="57" r="52"/>
+                <circle class="meter" cx="57" cy="57" r="52"/>
+            </svg>
         </div>
-
+        <h4>현재 출석자</h4>
+        <div th:each="name : *{attendanceNames}">
+            <span th:text="${name}">name</span>
+        </div>
+        <br/>
+        <h4>현재 미출석자</h4>
+        <div th:each="name : *{notAttendanceNames}">
+            <span th:text="${name}">name</span>
+        </div>
     </div>
 </div>
 </body>
