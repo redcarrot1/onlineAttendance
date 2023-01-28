@@ -6,13 +6,13 @@ import com.sungam1004.register.domain.User;
 import com.sungam1004.register.dto.AttendanceDto;
 import com.sungam1004.register.exception.CustomException;
 import com.sungam1004.register.exception.ErrorCode;
+import com.sungam1004.register.manager.PasswordManager;
 import com.sungam1004.register.repository.AttendanceRepository;
 import com.sungam1004.register.repository.UserRepository;
-import com.sungam1004.register.manager.PasswordManager;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -34,7 +34,7 @@ public class AttendanceService {
         if (!passwordManager.isCorrectUserPassword(password)) {
             throw new CustomException(ErrorCode.INCORRECT_PASSWORD);
         }
-        if (!validSunday()) throw new CustomException(ErrorCode.INVALID_DAY_OF_WEEK);
+        //if (!validSunday()) throw new CustomException(ErrorCode.INVALID_DAY_OF_WEEK);
 
         User user = userRepository.findByName(name)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
@@ -66,6 +66,9 @@ public class AttendanceService {
                 response.getAttendanceNames().add(user.getName());
             else response.getNotAttendanceNames().add(user.getName());
         }
+        double ratio = (double) response.getAttendanceNames().size()*100 / users.size();
+        response.setRatio((int) Math.round(ratio));
+        System.out.println(ratio);
         return response;
     }
 }

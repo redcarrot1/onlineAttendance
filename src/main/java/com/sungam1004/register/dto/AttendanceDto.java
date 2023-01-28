@@ -27,6 +27,7 @@ public class AttendanceDto {
     public static class Response {
 
         private String team;
+        private Integer ratio;
         private List<String> attendanceNames = new ArrayList<>();
         private List<String> notAttendanceNames = new ArrayList<>();
 
