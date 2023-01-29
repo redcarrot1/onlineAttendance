@@ -136,10 +136,10 @@ public class ExcelManager {
 
     private short getTeamColor(Team team) {
         // https://t1.daumcdn.net/cfile/tistory/23448C3F5953472C20?original
-        if (team == Team.안준범) return IndexedColors.LEMON_CHIFFON.getIndex();
+        if (team == Team.복덕방) return IndexedColors.LEMON_CHIFFON.getIndex();
         if (team == Team.복덕복덕) return IndexedColors.TAN.getIndex();
-        if (team == Team.부장님) return IndexedColors.LIME.getIndex();
-        if (team == Team.김호정T) return IndexedColors.AQUA.getIndex();
+        if (team == Team.복권) return IndexedColors.LIME.getIndex();
+        if (team == Team.또복) return IndexedColors.AQUA.getIndex();
         if (team == Team.복통) return IndexedColors.SEA_GREEN.getIndex();
         else return IndexedColors.CORAL.getIndex();
     }
