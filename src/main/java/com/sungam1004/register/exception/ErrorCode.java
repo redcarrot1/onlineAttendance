@@ -8,6 +8,13 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
 
+    // Common
+    ENTITY_NOT_FOUND(HttpStatus.BAD_REQUEST, "C001", "엔티티 조회에 실패하였습니다."),
+    INVALID_VALUE(HttpStatus.BAD_REQUEST, "C002", "잘못된 입력값입니다."),
+    METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C003", "잘못된 HTTP 메서드입니다."),
+    ACCESS_DENIED(HttpStatus.FORBIDDEN, "C004", "권한이 없습니다."),
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "C005", "서버 내부에서 에러가 발생하였습니다."),
+
     NOT_FOUND_USER(HttpStatus.BAD_REQUEST, "U001", "해당 사용자를 찾을 수 없습니다."),
     DUPLICATE_USER_NAME(HttpStatus.BAD_REQUEST, "U002", "회원 이름은 중복될 수 없습니다."),
     NOT_FOUND_TEAM(HttpStatus.BAD_REQUEST, "U003", "팀을 찾을 수 없습니다."),

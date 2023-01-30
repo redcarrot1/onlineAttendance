@@ -1,6 +1,5 @@
 package com.sungam1004.register.manager;
 
-
 import com.sungam1004.register.domain.Team;
 import com.sungam1004.register.dto.StatisticsDto;
 import lombok.extern.slf4j.Slf4j;
