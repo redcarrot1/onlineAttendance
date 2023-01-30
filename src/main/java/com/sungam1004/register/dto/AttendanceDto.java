@@ -1,9 +1,9 @@
 package com.sungam1004.register.dto;
 
+import com.sungam1004.register.manager.TodayPostManager;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -30,9 +30,13 @@ public class AttendanceDto {
         private Integer ratio;
         private List<String> attendanceNames = new ArrayList<>();
         private List<String> notAttendanceNames = new ArrayList<>();
+        private String todayPost;
+        private List<String> questions;
 
         public Response(String team) {
             this.team = team;
+            this.todayPost = TodayPostManager.post;
+            this.questions = TodayPostManager.questions;
         }
     }
 }

@@ -34,7 +34,7 @@ public class AttendanceService {
         if (!passwordManager.isCorrectUserPassword(password)) {
             throw new CustomException(ErrorCode.INCORRECT_PASSWORD);
         }
-        if (!validSunday()) throw new CustomException(ErrorCode.INVALID_DAY_OF_WEEK);
+        //if (!validSunday()) throw new CustomException(ErrorCode.INVALID_DAY_OF_WEEK);
 
         User user = userRepository.findByName(name)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
