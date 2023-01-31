@@ -17,7 +17,7 @@ public class PasswordManager {
     @Value("${password.admin}")
     public String adminPassword;
 
-    public void changeUserPassword(String nPassword) throws CustomException {
+    public void changeUserPassword(String nPassword) {
         if (Pattern.matches("^[0-9]{4}$", nPassword)) {
             userPassword = nPassword;
         }
@@ -28,7 +28,7 @@ public class PasswordManager {
         return Objects.equals(userPassword, nPassword);
     }
 
-    public void changeAdminPassword(String nPassword) throws CustomException {
+    public void changeAdminPassword(String nPassword) {
         if (nPassword.length() >= 5 && nPassword.length() <= 20) {
             adminPassword = nPassword;
         }

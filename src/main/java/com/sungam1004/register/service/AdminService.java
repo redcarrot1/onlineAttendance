@@ -2,10 +2,7 @@ package com.sungam1004.register.service;
 
 import com.sungam1004.register.domain.Attendance;
 import com.sungam1004.register.domain.User;
-import com.sungam1004.register.dto.AddUserDto;
-import com.sungam1004.register.dto.StatisticsDto;
-import com.sungam1004.register.dto.UserDetailDto;
-import com.sungam1004.register.dto.UserManagerDto;
+import com.sungam1004.register.dto.*;
 import com.sungam1004.register.exception.CustomException;
 import com.sungam1004.register.exception.ErrorCode;
 import com.sungam1004.register.repository.AttendanceRepository;
@@ -38,6 +35,7 @@ public class AdminService {
         User user = requestDto.toEntity();
         userRepository.save(user);
     }
+
     @Transactional(readOnly = true)
     public List<UserManagerDto> findUserAll() {
         return userRepository.findAll().stream()
@@ -86,5 +84,28 @@ public class AdminService {
         attendanceRepository.save(new Attendance(user, date.atStartOfDay()));
         user.decreaseAbsenceNumber();
         user.increaseAttendanceNumber();
+    }
+
+    public void changeAttendance(Long userId, ChangeAttendanceDto.Request dto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        LocalDate date = LocalDate.parse(dto.getDate(), DateTimeFormatter.ISO_DATE);
+        /**
+         * TODO 검증 필요
+         */
+        if (dto.getAttendance()) {
+            attendanceRepository.save(new Attendance(user, date.atStartOfDay()));
+            user.decreaseAbsenceNumber();
+            user.increaseAttendanceNumber();
+        }
+        else {
+            Optional<Attendance> optionalAttendance
+                    = attendanceRepository.findByUserAndCreatedAtBetween(user, date.atStartOfDay(), date.atTime(LocalTime.MAX));
+            if (optionalAttendance.isPresent()) {
+                attendanceRepository.delete(optionalAttendance.get());
+                user.decreaseAttendanceNumber();
+                user.increaseAbsenceNumber();
+            }
+        }
     }
 }
