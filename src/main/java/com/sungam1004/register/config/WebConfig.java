@@ -23,11 +23,12 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/css/**", "/*.ico", "/error", "/admin/login"); //인터셉터에서 제외할 패턴 지정
     }
 
+    /*
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods("GET", "POST", "PATCH")
                 .allowCredentials(true);
-    }
+    }*/
 }
