@@ -43,3 +43,4 @@ insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH
 insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (36, 53, 0, '오유환','01.11.01.','292-62-99477', '복통');
 insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (37, 53, 0, '김태윤','04.03.06.','618-99-89090', '복통');
 insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (38, 53, 0, '조민성','01.01.02.','618-99-89090', '복통');
+insert into "USERS" ("ID", "ABSENCE_NUMBER", "ATTENDANCE_NUMBER", "NAME", "BIRTH", "PHONE", "TEAM") values (41, 53, 0, '최민호','00.xx.xx.','618-99-89090', '복통');
