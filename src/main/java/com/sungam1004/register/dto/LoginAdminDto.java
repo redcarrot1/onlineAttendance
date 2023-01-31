@@ -16,4 +16,12 @@ public class LoginAdminDto {
         private String password;
     }
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Response {
+
+        private String token;
+    }
+
 }
